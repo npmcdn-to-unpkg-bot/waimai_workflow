@@ -1,0 +1,10 @@
+{
+    "name": "array-tree-filter",
+    "description": "filter in array tree",
+    "repos": "https://github.com/afc163/tree-filter.git",
+    "main": "index.js",
+    "tag": "master",
+    "reposType": "npm",
+    "dependencies": {},
+    "version": "1.0.0"
+}

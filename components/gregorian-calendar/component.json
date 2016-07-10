@@ -1,0 +1,10 @@
+{
+    "name": "gregorian-calendar",
+    "description": "date time utils ported from java",
+    "repos": "https://github.com/yiminghe/gregorian-calendar.git",
+    "main": "lib/gregorian-calendar",
+    "tag": "master",
+    "reposType": "npm",
+    "version": "4.1.3",
+    "dependencies": {}
+}

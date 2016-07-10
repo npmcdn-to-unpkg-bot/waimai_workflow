@@ -1,0 +1,10 @@
+{
+    "name": "css-animation",
+    "description": "css-animation ui component for react",
+    "repos": "https://github.com/yiminghe/css-animation.git",
+    "main": "lib/index",
+    "tag": "master",
+    "reposType": "npm",
+    "version": "1.1.1",
+    "dependencies": {}
+}

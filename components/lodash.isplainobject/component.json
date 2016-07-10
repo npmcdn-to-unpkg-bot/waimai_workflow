@@ -1,0 +1,10 @@
+{
+    "repos": "https://github.com/lodash/lodash.git",
+    "tag": "master",
+    "name": "lodash.isplainobject",
+    "main": "index.js",
+    "dependencies": {},
+    "version": "4.0.3",
+    "description": "The lodash method `_.isPlainObject` exported as a module.",
+    "reposType": "npm"
+}

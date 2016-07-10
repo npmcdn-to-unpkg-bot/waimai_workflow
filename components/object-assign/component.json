@@ -1,0 +1,6 @@
+{
+    "repos": "https://github.com/sindresorhus/object-assign.git",
+    "version": "v4.0.1",
+    "name": "object-assign",
+    "main": "index.js"
+}

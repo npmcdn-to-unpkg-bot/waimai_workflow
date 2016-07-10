@@ -1,0 +1,10 @@
+{
+    "name": "util-deprecate",
+    "description": "The Node.js `util.deprecate()` function with browser support",
+    "repos": "https://github.com/TooTallNate/util-deprecate.git",
+    "main": "browser.js",
+    "tag": "master",
+    "reposType": "npm",
+    "dependencies": {},
+    "version": "1.0.2"
+}

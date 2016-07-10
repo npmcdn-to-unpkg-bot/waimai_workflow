@@ -1,0 +1,15 @@
+{
+    "name": "react-slick",
+    "description": " React port of slick carousel",
+    "repos": "https://github.com/akiran/react-slick.git",
+    "main": "react-slick",
+    "tag": "master",
+    "reposType": "npm",
+    "dependencies": {
+        "react": "^0.13.0 || ^0.14.0"
+    },
+    "version": "0.10.0",
+    "paths": {
+        "dist": "."
+    }
+}

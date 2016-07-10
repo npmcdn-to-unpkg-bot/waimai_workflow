@@ -1,0 +1,10 @@
+{
+    "name": "hoist-non-react-statics",
+    "description": "Copies non-react specific statics from a child component to a parent component",
+    "repos": "https://github.com/mridgway/hoist-non-react-statics.git",
+    "main": "index.js",
+    "tag": "master",
+    "reposType": "npm",
+    "dependencies": {},
+    "version": "1.0.5"
+}

@@ -1,0 +1,10 @@
+{
+    "name": "lodash._stack",
+    "description": "The internal lodash function `Stack` exported as a module.",
+    "repos": "https://github.com/lodash/lodash.git",
+    "tag": "master",
+    "reposType": "npm",
+    "dependencies": {},
+    "main": "index.js",
+    "version": "4.1.1"
+}

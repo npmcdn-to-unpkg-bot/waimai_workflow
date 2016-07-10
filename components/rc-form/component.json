@@ -1,0 +1,14 @@
+{
+    "name": "rc-form",
+    "description": "React High Order Form Component",
+    "repos": "https://github.com/react-component/form.git",
+    "main": "./lib/index",
+    "tag": "master",
+    "reposType": "npm",
+    "dependencies": {
+        "async-validator": "1.x",
+        "dom-scroll-into-view": "1.x",
+        "hoist-non-react-statics": "1.x"
+    },
+    "version": "0.13.6"
+}

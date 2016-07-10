@@ -1,0 +1,12 @@
+{
+    "name": "rc-dropdown",
+    "description": "dropdown ui component for react",
+    "repos": "https://github.com/react-component/dropdown.git",
+    "main": "lib/index",
+    "tag": "master",
+    "reposType": "npm",
+    "dependencies": {
+        "rc-trigger": "1.x"
+    },
+    "version": "1.4.7"
+}

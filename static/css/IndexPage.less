@@ -1,0 +1,50 @@
+#app{
+  .header{
+    width:100%;
+    border-bottom:1px solid #dedede;
+
+  }
+  .fold {
+    width: 0 !important;
+    .body {
+      width: 0 !important;
+      overflow: hidden;
+    }
+    .foldTrigger {
+      right: -15px;
+
+      .arrow {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+      }
+    }
+  }
+
+  .foldTrigger {
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    width: 15px;
+    height: 60px;
+    background-color: #51789f;
+    line-height: 60px;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+  }
+
+  .left:hover {
+    .foldTrigger {
+      display: block;
+      right: -15px;
+    }
+  }
+
+  .arrow {
+    text-align: center;
+    color: #ffffff;
+    // transform:rotate(90deg);
+    -webkit-transform: rotate(180deg);
+    // stransform:rotate(90deg);
+  }
+}
+

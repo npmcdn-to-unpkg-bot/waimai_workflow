@@ -1,0 +1,12 @@
+{
+    "name": "async-validator",
+    "description": "validate form asynchronous",
+    "repos": "https://github.com/yiminghe/async-validator.git",
+    "main": "./lib/index",
+    "tag": "master",
+    "reposType": "npm",
+    "version": "1.5.1",
+    "dependencies": {
+        "lodash.mergewith": "^4.0.3"
+    }
+}

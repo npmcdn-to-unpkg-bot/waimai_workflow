@@ -1,0 +1,13 @@
+{
+    "name": "gregorian-calendar-format",
+    "description": "format utils for gregorian-calendar",
+    "repos": "https://github.com/yiminghe/gregorian-calendar-format.git",
+    "main": "./lib/gregorian-calendar-format",
+    "tag": "master",
+    "reposType": "npm",
+    "dependencies": {
+        "gregorian-calendar": "4.x",
+        "warning": "2.x"
+    },
+    "version": "4.1.2"
+}

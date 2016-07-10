@@ -1,0 +1,12 @@
+{
+    "name": "add-dom-event-listener",
+    "description": "add dom event listener. normalize ie and others",
+    "repos": "https://github.com/yiminghe/add-dom-event-listener.git",
+    "main": "lib/index",
+    "tag": "master",
+    "reposType": "npm",
+    "dependencies": {
+        "object-assign": "4.x"
+    },
+    "version": "1.0.1"
+}

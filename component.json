@@ -1,0 +1,12 @@
+{
+  "dependencies": [
+    "github:fis-components/react-dom@0.14.7",
+    "github:fis-components/antd@0.12.4",
+    "github:fis-components/react@0.14.7",
+    "github:fis-components/react-router@2.0.0",
+    "github:fis-components/lodash.mergewith@4.3.0",
+    "github:fis-components/lodash._baseclone@4.5.3",
+    "github:fis-components/moment@2.12.0",
+    "github:fis-components/echarts@3.0.2"
+  ]
+}
