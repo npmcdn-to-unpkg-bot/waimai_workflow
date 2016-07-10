@@ -49,4 +49,3 @@ Object.keys(proxyConf).map(function (path) {
 http.createServer(app).listen(3050);
 console.log("listening on port 3050")
 
-// 测试git用
