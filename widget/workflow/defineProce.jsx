@@ -15,38 +15,7 @@ var style={
 		}
 
 	};
-const inforColumns = [{
-	  title: 'ID',
-	  dataIndex: 'id',
-	  key: 'id'
-	}, {
-	  title: 'Type',
-	  dataIndex: 'type',
-	  key: 'type',
-	}, {
-	  title: 'Name',
-	  dataIndex: 'name',
-	  key: 'name',
-	}, {
-		title: 'Group Type',
-		dataIndex: 'groupType',
-		key: 'groupType'
-	}, {
-		title: 'Users',
-		dataIndex: 'users',
-		key: 'users'
-	}, {
-	  title: 'Operation',
-	  key: 'operation',
-	  render: (text, record) => (
-	    <span>
-	      <a href="javascript:;" style={{paddingRight: '10px'}}><Icon type="edit" /></a>
-	      <span className="ant-divider"></span>
-	      <a href="javascript:;" style={{paddingLeft: '10px'}}><Icon type="delete" /></a>
-	      
-	    </span>
-	  ),
-	}];
+
 
 
 const relaColumns = [{
@@ -102,7 +71,6 @@ var StateInfor = React.createClass({
 					type: '',
 					auditors: []
 				}
-
 			}
 
 		}
@@ -117,14 +85,20 @@ var StateInfor = React.createClass({
 			this.state.domInfor.groupType = event;
 		}
 	},
+	saveName(event) {
+		this.state.domInfor.name = event.target.value;
+		this.state.newInfor.name = event.target.value;
+	},
 	addUser() {
+		var domUser = "";
 		if(this.refs.user.refs.input.value){
 			var me = this;
 			this.state.newInfor.group.auditors.push(this.refs.user.refs.input.value);
 			this.state.newInfor.group.auditors.map(function(res){
-				me.state.domInfor.users = res+',';
+				domUser += res+',';
 			});
-			this.state.domInfor.users = this.state.domInfor.users.substr(0,this.state.domInfor.users.length-1);
+			this.state.domInfor.users = domUser.substr(0,domUser.length-1);
+			domUser = "";
 			this.refs.user.refs.input.value = "";
 			this.forceUpdate();
 		}else{
@@ -134,11 +108,11 @@ var StateInfor = React.createClass({
 
 	render : function(){
 		return(
-			<div className="ps5-1">
+			<div className="ps5-1" ref={this.state.domInfor}>
           		<Row>
                   <Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>类型：</Col>
                   <Col span={'18'}>
-                      <Select placeholder="请选择" style={{width: '80%'}} onChange={this.handleChange.bind(this,'groupType')}>
+                      <Select placeholder="请选择" style={{width: '80%'}} onChange={this.handleChange.bind(this,'type')}>
                             {this.props.inforType.map(function(res,index){
 					            return <Option key={index} value={res.type}>{res.type}</Option>
 
@@ -149,7 +123,7 @@ var StateInfor = React.createClass({
                 <div style={{height: '10px'}}></div>
                 <Row>
                   <Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>名称：</Col>
-                  <Col span={'18'} style={{width: '60%'}}><Input ref="name"></Input></Col>
+                  <Col span={'18'} style={{width: '60%'}}><Input ref="name" onChange={this.saveName}></Input></Col>
                 </Row>
                 <div style={{height: '10px'}}></div>
                 <Row>
@@ -206,7 +180,7 @@ var StateRela = React.createClass({
 	          	<div style={{height: '10px'}}></div>
 	          	<Row>
 	          		<Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>名称：</Col>
-	          		<Col span={'18'} style={{width: '60%'}}><Input></Input></Col>
+	          		<Col span={'18'} style={{width: '60%'}}><Input ref="name"></Input></Col>
 	          	</Row>
 	          	<div style={{height: '10px'}}></div>
 	          	<Row>
@@ -254,16 +228,10 @@ var DefineProce = React.createClass({
 			inforType: [],
 			inforGroupType: [],
 	      	visibleRela: false,
+	      	n: 0,
 	      	states: [],
 	      	transactions: [],
-	      	inforData : [{
-				  key: '1',
-				  id: '1',
-				  type: 'start',
-				  name: '开始',
-				  groupType: 'or',
-				  users: 'tom',
-				}],
+	      	inforData : [],
 			relaData : [{
 				key: '1',
 				id: '1',
@@ -343,11 +311,66 @@ var DefineProce = React.createClass({
 			visibleRela: false
 		});
 	},
+	getInfor() {
+		// console.log(this.refs.getInfor.refs.name.refs.input.value);
+		this.state.n = this.state.n + 1;
+		this.refs.getInfor.state.domInfor.key = this.state.n;
+		this.refs.getInfor.state.domInfor.id = this.state.n;
+		this.refs.getInfor.state.newInfor.id = this.state.n;
+		this.state.inforData.push(this.refs.getInfor.state.domInfor);
+		this.state.states.push(this.refs.getInfor.state.newInfor);
+		this.refs.getInfor.refs.name.refs.input.value = "";
+
+		this.refs.getInfor.state.domInfor = {key: '',id: '',type: '',name: '',groupType: '',users: ''};
+		this.refs.getInfor.state.newInfor = {id: '',type: '',name: '',group: {type: '',auditors: []}};
+
+		this.setState({
+	      inforKey: Date.now(),
+	      visibleInfor: true,
+	    });
+		console.log(this.state.inforData);
+		console.log(this.state.states);
+	},
+	editInfor(id) {
+		alert(id);
+	},
 	
 
 	
 		
 	render : function(){
+		const inforColumns = [{
+		  title: 'ID',
+		  dataIndex: 'id',
+		  key: 'id'
+		}, {
+		  title: 'Type',
+		  dataIndex: 'type',
+		  key: 'type',
+		}, {
+		  title: 'Name',
+		  dataIndex: 'name',
+		  key: 'name',
+		}, {
+			title: 'Group Type',
+			dataIndex: 'groupType',
+			key: 'groupType'
+		}, {
+			title: 'Users',
+			dataIndex: 'users',
+			key: 'users'
+		}, {
+		  title: 'Operation',
+		  key: 'operation',
+		  render: (text, record) => (
+		    <span>
+		      <a href="javascript:;" style={{paddingRight: '10px'}} onClick={()=>this.editInfor(record.id)}><Icon type="edit"/></a>
+		      <span className="ant-divider"></span>
+		      <a href="javascript:;" style={{paddingLeft: '10px'}}><Icon type="delete"/></a>
+		      
+		    </span>
+		  ),
+		}];
 		
 		return (
 			<div className="define-proce">	
@@ -385,14 +408,14 @@ var DefineProce = React.createClass({
 			          key={this.state.inforKey}
 			          onCancel={this.handleInforCancel}
 			          footer={[
-			          	<Button key="add" >保存并新增一行</Button>,
+			          	<Button key="add" onClick={this.getInfor}>保存并新增一行</Button>,
 			          	<Button key="save" >保存并完成</Button>,
 			            <Button key="back" type="ghost" onClick={this.handleInforCancel}>取消</Button>,
 			            
 			            
 			          ]}
 			        >
-			        	<StateInfor  inforType={this.state.inforType} inforGroupType={this.state.inforGroupType}/>
+			        	<StateInfor ref='getInfor' inforType={this.state.inforType} inforGroupType={this.state.inforGroupType}/>
 					</Modal>
 			    </Row>
 			    <div style={{height: '40px'}}></div>
