@@ -16,42 +16,6 @@ var style={
 
 	};
 
-
-
-const relaColumns = [{
-	  title: 'ID',
-	  dataIndex: 'id',
-	  key: 'id'
-	}, {
-	  title: '当前StateID',
-	  dataIndex: 'curstateid',
-	  key: 'curstateid',
-	}, {
-	  title: '下一跳StateID',
-	  dataIndex: 'nextstateid',
-	  key: 'nextstateid',
-	}, {
-		title: '操作',
-		dataIndex: 'action',
-		key: 'action'
-	}, {
-		title: '活动',
-		dataIndex: 'activities',
-		key: 'activities'
-	}, {
-	  title: 'Operation',
-	  key: 'operation',
-	  render: (text, record) => (
-	    <span>
-	      <a href="javascript:;" style={{paddingRight: '10px'}}><Icon type="edit" /></a>
-	      <span className="ant-divider"></span>
-	      <a href="javascript:;" style={{paddingLeft: '10px'}}><Icon type="delete" /></a>
-	      
-	    </span>
-	  ),
-	}];
-
-
 var StateInfor = React.createClass({
 	getInitialState() {
 		return {
@@ -166,48 +130,141 @@ var StateInfor = React.createClass({
 });
 
 var StateRela = React.createClass({
+	getInitialState() {
+		return {
+			domRela: {
+				key: '',
+		        id: '',
+		        curstateid: '',
+		        nextstateid: '',
+		        action: '',
+		        activities: '',
+		        users: '',
+		        message: ''
+			},
+			newRela: {
+				id: '',
+		        CurStateId: '',
+		        Action: '',
+		        NextStateId: '',
+		        Activities: [
+		            {
+		                type: '',
+		                users: [],
+		                Message: ''
+		            }
+		        ]
+		    },
+		    activities: []
+		}
+	},
+	handleChange(name,event) {
+		if(name=="nowId"){
+	        this.state.newRela.CurStateId = event;
+	        this.state.domRela.curstateid = event;
+	    }else if(name=="nextId"){
+	        this.state.newRela.NextStateId = event.target.value;
+	        this.state.domRela.nextstateid = event.target.value;
+	    }else if(name=="action"){
+	        this.state.newRela.Action = event;
+	        this.state.domRela.action = event;
+	    }else if(name=="activity"){
+	    	this.state.domRela.activities = event;
+	    }else if(name=="message"){
+	        this.state.newRela.Activities[0].Message = event.target.value;
+	        this.state.domRela.message = event.target.value;
+	    }
+
+	},
+	addActivity() {
+		this.state.activities.push(this.state.domRela.activities);
+		this.forceUpdate();
+	},
+	addUser() {
+		if(this.refs.user.refs.input.value){
+			this.state.domRela.users += this.refs.user.refs.input.value + ",";
+			// this.state.domRela.users = this.state.domRela.users.substr(0,this.state.domRela.users.length-1);
+			this.state.newRela.Activities[0].users.push(this.refs.user.refs.input.value); 
+		}else{
+			message.error('用户名不能为空');
+		}
+		console.log(this.state.domRela.users);
+		console.log(this.state.newRela.Activities[0].users);
+		this.refs.user.refs.input.value="";
+		this.forceUpdate();
+	},
 	render : function(){
 		return(
 			<div className="ps5-1">
 	          	<Row>
-	          		<Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>类型：</Col>
+	          		<Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>当前StateID：</Col>
 	          		<Col span={'18'}>
-	          		  <Select placeholder="请选择" style={{width: '80%'}}>
-			            
+	          		  <Select placeholder="请选择" style={{width: '80%'}} onChange={this.handleChange.bind(this,'nowId')}>
+			        		{this.props.startIds.map(function(res,index){
+			        			return <Option key={index} value={res}>{res}</Option>
+			        		})}
 			          </Select>
 	          		</Col>
 	          	</Row>
 	          	<div style={{height: '10px'}}></div>
 	          	<Row>
-	          		<Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>名称：</Col>
-	          		<Col span={'18'} style={{width: '60%'}}><Input ref="name"></Input></Col>
+	          		<Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>下一跳节点ID：</Col>
+	          		<Col span={'18'} style={{width: '60%'}}><Input onChange={this.handleChange.bind(this,'nextId')}></Input></Col>
 	          	</Row>
 	          	<div style={{height: '10px'}}></div>
 	          	<Row>
-	          		<Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>用户组类型：</Col>
+	          		<Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>操作：</Col>
 	          		<Col span={'18'} style={{width: '75%'}}>
-	          			<Select placeholder="请选择" style={{width: '80%'}}>
-				            <Option value="china">中国</Option>
-				            <Option value="use">美国</Option>
-				            <Option value="japan">日本</Option>
-				            <Option value="korean">韩国</Option>
-				            <Option value="Thailand">泰国</Option>
+	          			<Select placeholder="请选择" style={{width: '80%'}} onChange={this.handleChange.bind(this,'action')}>
+	          				{this.props.actionType.map(function(res,index){
+	          					return <Option key={index} value={res.type}>{res.type}</Option>
+	          				})}
 				        </Select>
+	          		</Col>
+	          	</Row>
+	          	<div style={{height: '10px'}}></div>
+	          	<Row>
+	          		<Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>活动：</Col>
+	          		<Col span={'14'} style={{width: '50%'}}>
+	          			<Select placeholder="请选择" style={{width: '100%'}} onChange={this.handleChange.bind(this,'activity')}>
+	          				{this.props.activityType.map(function(res,index){
+				            	return <Option key={index} value={res.type}>{res.type}</Option>
+	          				})}
+				        </Select>
+	          		</Col>
+	          		<Col span={'4'}><Button style={{marginLeft: '15px'}} onClick={this.addActivity}>添加</Button></Col>
+	          	</Row>
+	          	<div style={{height: '10px'}}></div>
+	          	<Row>
+	          		<Col span={'6'}>&nbsp;</Col>
+	          		<Col span={'18'} style={{width: '60%'}}>
+	          			{this.state.activities.map(function(res,index){
+	          				return <Button key={index}>{res}</Button>
+	          			})}
 	          		</Col>
 	          	</Row>
 	          	<div style={{height: '10px'}}></div>
 	          	<Row>
 	          		<Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>用户：</Col>
 	          		<Col span={'14'} style={{width: '50%'}}>
-	          			<Input></Input>
+	          			<Input ref="user"/>
 	          		</Col>
-	          		<Col span={'4'}><Button style={{marginLeft: '15px'}}>提交</Button></Col>
+	          		<Col span={'4'}><Button style={{marginLeft: '15px'}} onClick={this.addUser}>添加</Button></Col>
 	          	</Row>
 	          	<div style={{height: '10px'}}></div>
 	          	<Row>
 	          		<Col span={'6'}>&nbsp;</Col>
 	          		<Col span={'18'} style={{width: '60%'}}>
-	          			<Input type="textarea"/>
+	          			{this.state.newRela.Activities[0].users.map(function(res,index){
+	          				return <Button key={index}>{res}</Button>
+	          			})}
+	          		</Col>
+	          	</Row>
+	          	<div style={{height: '10px'}}></div>
+	          	<Row>
+	          		<Col span={'6'} style={{textAlign: 'center', lineHeight: '28px'}}>消息：</Col>
+	          		<Col span={'18'} style={{width: '60%'}}>
+	          			<Input type="textarea" onChange={this.handleChange.bind(this,'message')}/>
 	          		</Col>
 	          	</Row>
 	          	
@@ -227,73 +284,62 @@ var DefineProce = React.createClass({
 			visibleInfor: false,
 			inforType: [],
 			inforGroupType: [],
+			actionType: [],
+			activityType: [],
+			startIds: [],
 	      	visibleRela: false,
-	      	n: 0,
+	      	n: 0,m: 0,
 	      	states: [],
 	      	transactions: [],
 	      	inforData : [],
-			relaData : [{
-				key: '1',
-				id: '1',
-				curstateid: '1',
-				nextstateid: '1',
-				action: 'approve',
-				activities: 'email'
-
-			}],
+			relaData : [],
 		}
 
 	},
 	showInfor() {
 		var me=this;
-		// Promise.all([
-		// 	reqwest({
-		// 		type:'JSON',
-		// 		url:'/v1/statetype/',
-		// 		method:'get',
-		// 		headers:{
-		// 			'HESTIA-USERNAME': 'dong'
-		// 		}
-		// 	}).then(function(res){
-		// 		if(res.status==200){
-		// 			var result = JSON.parse(res.response);
-		// 			if(result.errno==0){
-		// 				return result;
-		// 			}
-		// 		}
-		// 	}),
-		// 	reqwest({
-		// 		type:'JSON',
-		// 		url:'/v1/grouptype/',
-		// 		method:'get',
-		// 		headers:{
-		// 			'HESTIA-USERNAME': 'dong'
-		// 		}
-		// 	}).then(function(res){
-		// 		if(res.status==200){
-		// 			var result = JSON.parse(res.response);
-		// 			if(result.errno==0){
-		// 				return result;
-		// 			}
-		// 		}
-		// 	})
+		Promise.all([
+			reqwest({
+				type:'JSON',
+				url:'/v1/statetype/',
+				method:'get',
+				headers:{
+					'HESTIA-USERNAME': 'dong'
+				}
+			}).then(function(res){
+				if(res.status==200){
+					var result = JSON.parse(res.response);
+					if(result.errno==0){
+						return result;
+					}
+				}
+			}),
+			reqwest({
+				type:'JSON',
+				url:'/v1/grouptype/',
+				method:'get',
+				headers:{
+					'HESTIA-USERNAME': 'dong'
+				}
+			}).then(function(res){
+				if(res.status==200){
+					var result = JSON.parse(res.response);
+					if(result.errno==0){
+						return result;
+					}
+				}
+			})
 
 
-		// ]).then(function(result){
-		// 	me.setState({
-		// 	  inforType: result[0].data,
-		// 	  inforGroupType: result[1].data,
-		//       visibleInfor: true,
-		//       inforKey: Date.now()
-		//     });
-		// });
-		this.setState({
-	      inforType: [{type: '1'},{type: '2'}],
-	      inforGroupType: [{type: '1'},{type: '2'}],
-	      inforKey: Date.now(),
-	      visibleInfor: true,
-	    });
-	    
+		]).then(function(result){
+			me.setState({
+			  inforType: result[0].data,
+			  inforGroupType: result[1].data,
+		      visibleInfor: true,
+		      inforKey: Date.now()
+		    });
+		});
+		
 	},
 	handleInforCancel() {
 	    this.setState({
@@ -301,10 +347,59 @@ var DefineProce = React.createClass({
 	    });
 	},
 	showRela() {
-		this.setState({
-			visibleRela: true,
-			relationKey: Date.now()
+		var me=this;
+		Promise.all([
+			reqwest({
+				type:'JSON',
+				url:'/v1/actiontype/',
+				method:'get',
+				headers:{
+					'HESTIA-USERNAME': 'dong'
+				}
+			}).then(function(res){
+				if(res.status==200){
+					var result = JSON.parse(res.response);
+					if(result.errno==0){
+						return result;
+					}
+				}
+			}),
+			reqwest({
+				type:'JSON',
+				url:'/v1/activitytype/',
+				method:'get',
+				headers:{
+					'HESTIA-USERNAME': 'dong'
+				}
+			}).then(function(res){
+				if(res.status==200){
+					var result = JSON.parse(res.response);
+					if(result.errno==0){
+						return result;
+					}
+				}
+			}),
+
+			new Promise(resolve => {
+				var ids=[];
+		        this.state.inforData.map(function(res){
+		        	ids.push(res.id);
+		        });
+		        resolve(ids);
+		    }),
+
+
+
+		]).then(function(result){
+			me.setState({
+			  actionType: result[0].data,
+			  activityType: result[1].data,
+			  startIds: result[2],
+		      visibleRela: true,
+			  relationKey: Date.now()
+		    });
 		});
+
 	},
 	handleRelaCancel() {
 		this.setState({
@@ -312,7 +407,6 @@ var DefineProce = React.createClass({
 		});
 	},
 	getInfor() {
-		// console.log(this.refs.getInfor.refs.name.refs.input.value);
 		this.state.n = this.state.n + 1;
 		this.refs.getInfor.state.domInfor.key = this.state.n;
 		this.refs.getInfor.state.domInfor.id = this.state.n;
@@ -328,16 +422,87 @@ var DefineProce = React.createClass({
 	      inforKey: Date.now(),
 	      visibleInfor: true,
 	    });
-		console.log(this.state.inforData);
-		console.log(this.state.states);
 	},
 	editInfor(id) {
 		alert(id);
 	},
-	
+	delInfor(id){
+		alert(id);
+	},
+	getRela() {
 
-	
+		function isClass(o){
+		    if(o===null) return "Null";
+		    if(o===undefined) return "Undefined";
+		    return Object.prototype.toString.call(o).slice(8,-1);
+		}
+
+		function deepClone(obj){
+		    var result,oClass=isClass(obj);
+		        //确定result的类型
+		    if(oClass==="Object"){
+		        result={};
+		    }else if(oClass==="Array"){
+		        result=[];
+		    }else{
+		        return obj;
+		    }
+		    var key;
+		    for(key in obj){
+		        var copy=obj[key];
+		        if(isClass(copy)=="Object"){
+		            result[key]=arguments.callee(copy);//递归调用
+		        }else if(isClass(copy)=="Array"){
+		            result[key]=arguments.callee(copy);
+		        }else{
+		            result[key]=obj[key];
+		        }
+		    }
+		    return result;
+		}
+
+		var me=this;
 		
+		this.refs.getRela.state.activities.map(function(res){
+			me.state.m = me.state.m + 1;
+			me.refs.getRela.state.domRela.key = me.state.m;
+			me.refs.getRela.state.domRela.id = me.state.m;
+			me.refs.getRela.state.domRela.activities = res;
+			console.log(deepClone(me.refs.getRela.state.domRela));
+			me.state.relaData.push(deepClone(me.refs.getRela.state.domRela));
+
+			me.refs.getRela.state.newRela.id = me.state.m;
+			me.refs.getRela.state.newRela.Activities[0].type = res;
+			me.state.transactions.push(me.refs.getRela.state.newRela);
+		});
+		// console.log(me.state.relaData);
+		console.log(this.state.transactions);
+
+		this.refs.getRela.state.domRela = {key: '',id: '',curstateid: '',nextstateid: '',action: '',activities: '',users: '',message: ''};
+		this.refs.getRela.state.newRela = {id: '',CurStateId: '',Action: '',NextStateId: '',Activities: [{type: '',users: [],Message: ''}]};
+
+		this.setState({
+	      relaKey: Date.now(),
+	      visibleRela: true,
+	    });
+
+	},
+	editRela(id){
+		alert(id);
+	},
+	delRela(id){
+		alert(id);
+	},
+	submit() {
+		var obj = {
+			name: this.refs.name.refs.input.value,
+			content: this.refs.content.refs.input.value,
+			url: this.refs.url.refs.input.value,
+			states: this.state.states,
+			transactions: this.state.transactions
+		}
+		console.log(obj);
+	},
 	render : function(){
 		const inforColumns = [{
 		  title: 'ID',
@@ -366,7 +531,47 @@ var DefineProce = React.createClass({
 		    <span>
 		      <a href="javascript:;" style={{paddingRight: '10px'}} onClick={()=>this.editInfor(record.id)}><Icon type="edit"/></a>
 		      <span className="ant-divider"></span>
-		      <a href="javascript:;" style={{paddingLeft: '10px'}}><Icon type="delete"/></a>
+		      <a href="javascript:;" style={{paddingLeft: '10px'}} onClick={()=>this.delInfor(record.id)}><Icon type="delete"/></a>
+		      
+		    </span>
+		  ),
+		}];
+		const relaColumns = [{
+		  title: 'ID',
+		  dataIndex: 'id',
+		  key: 'id'
+		}, {
+		  title: '当前StateID',
+		  dataIndex: 'curstateid',
+		  key: 'curstateid',
+		}, {
+		  title: '下一跳StateID',
+		  dataIndex: 'nextstateid',
+		  key: 'nextstateid',
+		}, {
+			title: '操作',
+			dataIndex: 'action',
+			key: 'action'
+		}, {
+			title: '活动',
+			dataIndex: 'activities',
+			key: 'activities'
+		}, {
+			title: '用户',
+			dataIndex: 'users',
+			key: 'users'
+		}, {
+			title: '消息',
+			dataIndex: 'message',
+			key: 'message'
+		}, {
+		  title: 'Operation',
+		  key: 'operation',
+		  render: (text, record) => (
+		    <span>
+		      <a href="javascript:;" style={{paddingRight: '10px'}} onClick={()=>this.editRela(record.id)}><Icon type="edit" /></a>
+		      <span className="ant-divider"></span>
+		      <a href="javascript:;" style={{paddingLeft: '10px'}} onClick={()=>this.delRela(record.id)}><Icon type="delete" /></a>
 		      
 		    </span>
 		  ),
@@ -377,17 +582,17 @@ var DefineProce = React.createClass({
 				<div style={{height: '10px'}}></div>
 				<Row>
 			      <Col span="3" style={style.cenlin}>*流程名称：</Col>
-			      <Col span="8"><Input placeholder="建议命名规则：产品(系统)名称 + 流程关键字 + 操作描述" /></Col>
+			      <Col span="8"><Input placeholder="建议命名规则：产品(系统)名称 + 流程关键字 + 操作描述" ref="name"/></Col>
 			      <Col span="13" style={{lineHeight: '40px'}}>(限20字，且名字不能重复)</Col>
 			    </Row>
 			    <Row>
 			    	<Col span="3" style={style.cenlin}><span>*</span>申请内容：</Col>
-			      <Col span="8"><Input type="textarea" style={{heght: '600px'}}/></Col>
+			      <Col span="8"><Input type="textarea" style={{heght: '600px'}} ref="content"/></Col>
 			    </Row>
 			    <div style={{height: '10px'}}></div>
 			    <Row>
-			      <Col span="3" style={style	.cenlin}>URL：</Col>
-			      <Col span="8"><Input /></Col>
+			      <Col span="3" style={style.cenlin}>URL：</Col>
+			      <Col span="8"><Input ref="url"/></Col>
 			    </Row>
 			    <div style={{height: '10px'}}></div>
 
@@ -426,7 +631,7 @@ var DefineProce = React.createClass({
 
 				<Row>
 					<Col span="24">
-						<Table columns={relaColumns} dataSource={this.state.relaData} pagination={false}/>
+						<Table rowKey={record => record.id} columns={relaColumns} dataSource={this.state.relaData} pagination={false}/>
 					</Col>
 				</Row>
 			    <div style={{height: '10px'}}></div>
@@ -438,15 +643,21 @@ var DefineProce = React.createClass({
 			          key={this.state.relaKey}
 			          onCancel={this.handleRelaCancel}
 			          footer={[
-			          	<Button key="add" >保存并新增一行</Button>,
+			          	<Button key="add" onClick={this.getRela}>保存并新增一行</Button>,
 			          	<Button key="save" >保存并完成</Button>,
 			            <Button key="back" type="ghost" onClick={this.handleRelaCancel}>取消</Button>,
 			            
 			            
 			          ]}
 			        >
-						<StateRela/>
+						<StateRela ref="getRela" actionType={this.state.actionType} activityType={this.state.activityType} startIds={this.state.startIds}/>
 					</Modal>
+			    </Row>
+			    <div style={{height: '50px'}}></div>
+
+			    <Row>
+			    	<Col span="2" offset="8"><Button onClick={this.submit}>提交</Button></Col>
+			    	<Col span="2" offset="2"><Button>取消</Button></Col>
 			    </Row>
 				
 			</div>
